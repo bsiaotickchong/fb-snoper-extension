@@ -46,12 +46,11 @@ function addBetButtonsWhereMissing() {
         var att = document.createAttribute("onclick");
         att.value = "window.open('https://snopes.com', '_blank');";
         btn.setAttributeNode(att); 
+        var cls = document.createAttribute("class");
+        cls.value = "btnSnopes";
+        btn.setAttributeNode(cls);
 
-        // var att = document.createAttribute("target");
-        // att.value = "_blank";
-        // link.setAttributeNode(att); 
-
-        tippy('#btnBet', { interactive: true, content: "asdf"});
+        tippy('#btnBet', { interactive: true, content: "Search on Snopes!"});
 
         // add the button to the like bar
         var likeBar = post.querySelector('[class="_ipo"]');
