@@ -36,10 +36,20 @@ function addBetButtonsWhereMissing() {
 
     posts.forEach(post => {
         // create the button 
-        var btn = document.createElement("BUTTON");
-        var t = document.createTextNode("Bet");
+        // var link = document.createElement('a');
+        var btn = document.createElement("button");
+        var t = document.createTextNode("Snopes");
+        // link.appendChild(btn);
         btn.appendChild(t);
         btn.id = "btnBet";
+
+        var att = document.createAttribute("onclick");
+        att.value = "window.open('https://snopes.com', '_blank');";
+        btn.setAttributeNode(att); 
+
+        // var att = document.createAttribute("target");
+        // att.value = "_blank";
+        // link.setAttributeNode(att); 
 
         tippy('#btnBet', { interactive: true, content: "asdf"});
 
@@ -57,5 +67,6 @@ setInterval(function() {
         addBetButtonsWhereMissing();
     }
 }, 1000);
+
 
 
