@@ -25,14 +25,18 @@ function checkIfShouldAddButtons() {
     return false;
 }
 
+function getTextFromSelector(element, divSelector) {
+    var divElement = element.querySelector(divSelector);
+    if(divElement){
+      return divElement.innerText
+    } else {
+      return '';
+    }
+}
+
 function addBetButtonsWhereMissing() {
     // get the posts
     var posts = getAllPosts();
-
-    var popup_template = document.createElement("div");
-    popup_template.id = "betPopUp";
-    var t = document.createTextNode("My thingy");
-    popup_template.appendChild(t);
 
     posts.forEach(post => {
         // create the button 
@@ -43,21 +47,38 @@ function addBetButtonsWhereMissing() {
         btn.appendChild(t);
         btn.id = "btnBet";
 
+        var articleTitle = getTextFromSelector(post, '[data-ad-preview="headline"]');
+        var descriptionTitle = getTextFromSelector(post, '[data-ad-preview="message"]');
+
+        var doc = nlp(articleTitle + '. ' + descriptionTitle);
+        var names = doc.topics().data();
+
+        var NLPArray = [];
+        names.forEach(name => {
+            NLPArray.push(name.normal);
+        });
+
+        var keywordQuery;
+        if(NLPArray.length == 0) {
+            keywordQuery = articleTitle; 
+        } else {
+            keywordQuery = NLPArray.join('+');
+        }
+
         var att = document.createAttribute("onclick");
-        att.value = "window.open('https://snopes.com', '_blank');";
+        att.value = "window.open('https://snopes.com/?s=" + escape(keywordQuery) + "', '_blank');";
         btn.setAttributeNode(att); 
 
         // var att = document.createAttribute("target");
         // att.value = "_blank";
         // link.setAttributeNode(att); 
 
-        tippy('#btnBet', { interactive: true, content: "asdf"});
+        tippy('#btnBet', { interactive: true, content: "Snopes this post."});
 
         // add the button to the like bar
         var likeBar = post.querySelector('[class="_ipo"]');
         if (likeBar != null && post.querySelector('[id="btnBet"]') == null){
             likeBar.prepend(btn);
-            // btn.addEventListener("click", showSnopesWindow);
         } 
     });
 }
