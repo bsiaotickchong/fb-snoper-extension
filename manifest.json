@@ -25,6 +25,7 @@
     },
     "content_scripts": [{
       "matches": [ "*://*.facebook.com/*" ],
+      "css": [ "snopes_button.css" ],
       "js": [ "tippy.all.min.js", "compromise.min.js", "add_snopes_buttons.js"],
       "all_frames": true,
       "run_at": "document_idle"
